@@ -1,0 +1,17 @@
+beautifulsoup4==4.15.0
+bs4==0.0.2
+certifi==2026.6.17
+cffi==2.0.0
+curl-cffi==0.15.0
+lxml==6.1.1
+markdown-it-py==4.2.0
+mdurl==0.1.2
+numpy==2.4.6
+pandas==3.0.3
+pycparser==3.0
+pygments==2.20.0
+python-dateutil==2.9.0.post0
+rich==15.0.0
+six==1.17.0
+soupsieve==2.8.4
+typing-extensions==4.15.0
