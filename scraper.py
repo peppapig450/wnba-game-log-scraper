@@ -27,8 +27,33 @@ def parse_team_gamelog(html_stream: io.StringIO) -> pd.DataFrame:
         print("Warning: Regular season not found.")
         return pd.DataFrame()
 
-    regular_season_table = pd.read_html(io.StringIO(str(table)))[0]
-    return regular_season_table
+    header_selector = sv.compile(
+        "thead tr:not(.over_header) th[data-stat]:not([data-stat='DUMMY'])"
+    )
+    header_cells = header_selector.select(table)
+
+    stat_keys = [th["data-stat"] for th in header_cells]
+
+    all_games_data = []
+
+    cell_selector = sv.compile(
+        "th[data-stat]:not([data-stat='DUMMY']), td[data-stat]:not([data-stat='DUMMY'])"
+    )
+
+    for row in table.select("tbody tr:has([data-stat='ranker'])"):
+        # we extract all non-DUMMY metric cells in this row
+        cells = cell_selector.select(row)
+
+        # We then zip the pre-calculated keys directly with the ordered cells
+        # this allows to skip scanning the DOM in our nested loop.
+        game_metrics = {
+            key: cell.get_text(strip=True) for key, cell in zip(stat_keys, cells)
+        }
+        all_games_data.append(game_metrics)
+
+    gamelog_df = pd.DataFrame(all_games_data, columns=stat_keys)
+
+    return gamelog_df
 
 
 def main():
