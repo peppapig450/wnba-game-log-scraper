@@ -7,6 +7,8 @@ from curl_cffi import requests
 
 from downloader import get_html_stream
 
+# TODO: in the future we can add scraping for things like:
+# https://www.basketball-reference.com/wnba/teams/IND/2026_on-off.html
 
 def fetch_html(session: requests.Session, url: str) -> str:
     try:
